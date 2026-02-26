@@ -71,11 +71,11 @@ fun FavoriteCardItem(favorite: Favorite,
                      getDepartureName: suspend (Favorite) -> String,
                      getDestinationName: suspend (Favorite) -> String,
                      modifier: Modifier = Modifier) {
-    // 1. Create state to hold the names. Initialize with a placeholder.
+    // Create state to hold the names. Initialize with a placeholder.
     var departureName by remember { mutableStateOf("...") }
     var destinationName by remember { mutableStateOf("...") }
 
-    // 2. Use LaunchedEffect to fetch the names when the composable is first displayed.
+    // Use LaunchedEffect to fetch the names when the composable is first displayed.
     // It will re-run if the departure or destination codes change.
     LaunchedEffect(favorite.departureCode) {
         departureName = getDepartureName(favorite)

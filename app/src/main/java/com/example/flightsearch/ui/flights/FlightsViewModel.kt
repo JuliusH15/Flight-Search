@@ -30,18 +30,15 @@ class FlightsViewModel(private val airportRepository: AirportRepository, private
             airportRepository.getFlightsStream(selectedAirportCode)
                 // The 'collect' operator will wait for the Flow to emit its value
                 .collect { destinationAirports ->
-                    // Inside this block, 'destinationAirports' is a regular List<Airport>
-
-                    // Now, create the list of Flight objects
                     val flights = destinationAirports.map { destinationAirport ->
                         Flight(
                             departureCode = selectedAirportCode,
                             departureName = getAirportName(selectedAirportCode),
-                            destinationCode = destinationAirport.iataCode,// Assuming you want the code
+                            destinationCode = destinationAirport.iataCode,
                             destinationName = getAirportName(destinationAirport.iataCode))
                     }
 
-                    // Finally, update the UI state with the new list
+                    // update the UI state with the new list
                     _uiState.update { currentState ->
                         currentState.copy(
                             flightsList = flights,
@@ -71,8 +68,7 @@ class FlightsViewModel(private val airportRepository: AirportRepository, private
     }
 
     suspend fun toggleFavorite(flight: Flight) {
-        // First, check if this flight already exists as a favorite in the database.
-        // We need a way to check this from the repository. Let's assume we have a getFavoriteStream() method.
+        //check if this flight already exists as a favorite in the database.
         val existingFavorite: Favorite? = favoriteRepository
             .getFavoriteStream(flight.departureCode, flight.destinationCode)
             .first() // .first() gets the first emission, which might be a Favorite or null
@@ -82,7 +78,6 @@ class FlightsViewModel(private val airportRepository: AirportRepository, private
             addFavorite(flight)
         } else {
             // If it exists, it's already a favorite. Delete it.
-            // The deleteFavorite method needs the Favorite object, which we just retrieved.
             deleteFavorite(existingFavorite)
         }
     }

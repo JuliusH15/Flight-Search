@@ -36,7 +36,7 @@ class HomeViewModel(
             )
         }
 
-        // Also, save the new query to the datastore for persistence
+        // save the new query to the datastore for persistence
         viewModelScope.launch {
             userPreferencesRepository.saveSearchQuery(updatedSearchQuery)
         }

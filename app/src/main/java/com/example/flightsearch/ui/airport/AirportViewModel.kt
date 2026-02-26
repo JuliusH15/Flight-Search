@@ -19,16 +19,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AirportViewModel(private val airportRepository: AirportRepository): ViewModel() {
-    // 1. Private mutable StateFlow to hold the entire UI state.
-    //    This is the "source of truth" for the screen.
+    // Private mutable StateFlow to hold the entire UI state.
     private val _airportUiState = MutableStateFlow(AirportUiState())
     val airportUiState: StateFlow<AirportUiState> = _airportUiState.asStateFlow()
 
-    // We still need to track the search query. A simple property is fine.
+
     private var searchQuery: String = ""
 
-    // 2. A public method for the UI to call whenever the user types.
-    //    This is the main entry point for the logic.
+    // A public method for the UI to call whenever the user types.
     fun onSearchQueryChange(newQuery: String) {
         // Update the internally tracked query
         searchQuery = newQuery
@@ -39,12 +37,10 @@ class AirportViewModel(private val airportRepository: AirportRepository): ViewMo
             return
         }
 
-        // 3. Launch a coroutine to fetch the data asynchronously.
-        //    This is the key pattern from Unit 6.
+        // Launch a coroutine to fetch the data asynchronously.
         viewModelScope.launch {
             airportRepository.getAirportsStream(searchQuery)
                 .collect { matchingAirports ->
-                    // 4. Once the data arrives, update the UI state.
                     _airportUiState.update { currentState ->
                         // If matchingAirports is not null, use it.
                         // If matchingAirports IS null, use an emptyList() instead.

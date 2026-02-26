@@ -82,8 +82,7 @@ fun HomeScreen(
                     flightsViewModel.clearSelection()
                     airportViewModel.onSearchQueryChange(newQuery)
                 },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null)},
-                //trailingIcon = { Icon(Icons.Default.)}
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null)}
             )
             if (flightsUiState.selectedAirport.isNotBlank()) {
                 //Show list of flights
